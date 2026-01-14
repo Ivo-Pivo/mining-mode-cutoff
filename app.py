@@ -66,29 +66,37 @@ btc_per_day_per_th = btc_per_day / network_hashrate
 nok_per_day_per_th = btc_per_day_per_th * btc_price
 nok_per_hour_per_th = nok_per_day_per_th / 24
 
+
+th_per_nok = network_hashrate * 600 / (block_reward * btc_price)
+
 # Efficiency per mode
 def th_per_kwh(hashrate, power_w):
-    return hashrate / (power_w / 1000)
+    return hashrate * 3600 / (power_w/1000)
 
 def j_per_th(hashrate, power_w):
-    return (power_w / hashrate) * 3600
+    return (power_w / hashrate)
 
 eco_eff = th_per_kwh(eco_hash, eco_power)
 std_eff = th_per_kwh(std_hash, std_power)
 sup_eff = th_per_kwh(sup_hash, sup_power)
+
+delta_eff_eco_std = th_per_kwh((std_hash - eco_hash), (std_power - eco_power)
+delta_eff_std_sup = th_per_kwh((sup_hash - std_hash), (sup_power - std_power)
 
 eco_jth = j_per_th(eco_hash, eco_power)
 std_jth = j_per_th(std_hash, std_power)
 sup_jth = j_per_th(sup_hash, sup_power)
 
 # Incremental efficiencies
-delta_eff_eco_std = (std_hash - eco_hash) / ((std_power - eco_power) / 1000)
-delta_eff_std_sup = (sup_hash - std_hash) / ((sup_power - std_power) / 1000)
+#delta_eff_eco_std = (std_hash - eco_hash) / ((std_power - eco_power) / 1000)
+#delta_eff_std_sup = (sup_hash - std_hash) / ((sup_power - std_power) / 1000)
 
 # Cut-off prices (øre/kWh)
-eco_cutoff = 100 * nok_per_hour_per_th * eco_eff
-eco_std_cutoff = 100 * nok_per_hour_per_th * delta_eff_eco_std
-std_sup_cutoff = 100 * nok_per_hour_per_th * delta_eff_std_sup
+eco_cutoff = 100 * eco_eff / th_per_nok
+#eco_std_cutoff = 100 * nok_per_hour_per_th * delta_eff_eco_std
+eco_std_cutoff = 100 * delta_eff_eco_std / th_per_nok
+#std_sup_cutoff = 100 * nok_per_hour_per_th * delta_eff_std_sup
+std_sup_cutoff = 100 * delta_eff_std_sup / th_per_nok
 
 # -----------------------------
 # Outputs
