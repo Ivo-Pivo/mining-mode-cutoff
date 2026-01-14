@@ -96,14 +96,14 @@ st.header("Results")
 st.subheader("Mode efficiencies")
 st.table({
     "TH/kWh": {
-        "Eco": round(eco_eff, -2),
-        "Standard": round(std_eff, -2),
-        "Super": round(sup_eff, -2),
+        "Eco": f"{round(eco_eff,-2):,.0f}",
+        "Standard": f"{round(std_eff,-2):,.0f}",
+        "Super": f"{round(sup_eff,-2):,.0f}",
     },
     "J/TH": {
-        "Eco": round(eco_jth, 1),
-        "Standard": round(std_jth, 1),
-        "Super": round(sup_jth, 1),
+        "Eco": f"{round(eco_jth, 1):,.1f}",
+        "Standard": f"{round(std_jth, 1):,.1f}",
+        "Super": f"{round(sup_jth, 1):,.1f}",
     }
 })
 
