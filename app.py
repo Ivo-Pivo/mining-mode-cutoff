@@ -59,6 +59,7 @@ btc_price = st.number_input(
 # Calculations
 # -----------------------------
 
+#HC = 1/R
 th_per_nok = network_hashrate * 600 / (block_reward * btc_price)
 
 # Efficiency per mode
@@ -126,3 +127,33 @@ st.metric(
 st.caption(
     "Cut-off points are based on marginal profitability per hour."
 )
+
+# -----------------------------
+# Profit calculation at user-specified electricity price
+# -----------------------------
+st.header("Profit simulation")
+
+elec_price = st.slider(
+    "Electricity price (øre/kWh)", 
+    min_value=0, 
+    max_value=200, 
+    value=100,
+)
+
+# Convert øre/kWh to NOK/kWh
+elec_price_nok = elec_price / 100
+
+# Profit per hour = (hashrate * 3600 (TH/kWh) / th_per_nok) - (electricity cost per kWh * kWh / h)
+def profit_per_hour(th_per_nok, power_w, elec_price_nok, hashrate):
+        power_kwh_per_hour = power_w / 1000
+        return (hashrate * 3600 / th_per_nok) - (elec_price_nok * power_w * 0.001)
+
+# Or simpler: Revenue per hour per kWh = eff_th_per_kwh / th_per_nok
+# Profit = revenue per hour - electricity cost per hour
+eco_profit = profit_per_hour(th_per_nok, eco_power, elec_price_nok, eco_hash)
+std_profit = profit_per_hour(th_per_nok, std_power, elec_price_nok, std_hash)
+sup_profit = profit_per_hour(th_per_nok, sup_power, elec_price_nok, sup_hash)
+
+st.metric("Eco profit per hour", f"{eco_profit:.2f} NOK")
+st.metric("Standard profit per hour", f"{std_profit:.2f} NOK")
+st.metric("Super profit per hour", f"{sup_profit:.2f} NOK")
