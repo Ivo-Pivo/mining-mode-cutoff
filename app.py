@@ -20,18 +20,18 @@ col1, col2, col3 = st.columns(3)
 
 with col1:
     st.subheader("Eco")
-    eco_power = st.number_input("Power (W)", value=1200.0)
-    eco_hash = st.number_input("Hashrate (TH/s)", value=40.0)
+    eco_power = st.number_input("Power (W)", value=830.0)
+    eco_hash = st.number_input("Hashrate (TH/s)", value=53.0)
 
 with col2:
     st.subheader("Standard")
-    std_power = st.number_input("Power (W) ", value=2000.0)
-    std_hash = st.number_input("Hashrate (TH/s) ", value=70.0)
+    std_power = st.number_input("Power (W) ", value=1381.0)
+    std_hash = st.number_input("Hashrate (TH/s) ", value=82.0)
 
 with col3:
     st.subheader("Super")
-    sup_power = st.number_input("Power (W)", value=3000.0)
-    sup_hash = st.number_input("Hashrate (TH/s)", value=100.0)
+    sup_power = st.number_input("Power (W)", value=1674.0)
+    sup_hash = st.number_input("Hashrate (TH/s)", value=90.0)
 
 # -----------------------------
 # Inputs: Network & market
@@ -58,14 +58,6 @@ btc_price = st.number_input(
 # -----------------------------
 # Calculations
 # -----------------------------
-BLOCKS_PER_DAY = 144
-
-# Revenue per TH per hour
-btc_per_day = BLOCKS_PER_DAY * block_reward
-btc_per_day_per_th = btc_per_day / network_hashrate
-nok_per_day_per_th = btc_per_day_per_th * btc_price
-nok_per_hour_per_th = nok_per_day_per_th / 24
-
 
 th_per_nok = network_hashrate * 600 / (block_reward * btc_price)
 
@@ -80,16 +72,13 @@ eco_eff = th_per_kwh(eco_hash, eco_power)
 std_eff = th_per_kwh(std_hash, std_power)
 sup_eff = th_per_kwh(sup_hash, sup_power)
 
-delta_eff_eco_std = th_per_kwh((std_hash - eco_hash), (std_power - eco_power)
-delta_eff_std_sup = th_per_kwh((sup_hash - std_hash), (sup_power - std_power)
+# Incremental efficiencies
+delta_eff_eco_std = th_per_kwh((std_hash - eco_hash), (std_power - eco_power))
+delta_eff_std_sup = th_per_kwh((sup_hash - std_hash), (sup_power - std_power))
 
 eco_jth = j_per_th(eco_hash, eco_power)
 std_jth = j_per_th(std_hash, std_power)
 sup_jth = j_per_th(sup_hash, sup_power)
-
-# Incremental efficiencies
-#delta_eff_eco_std = (std_hash - eco_hash) / ((std_power - eco_power) / 1000)
-#delta_eff_std_sup = (sup_hash - std_hash) / ((sup_power - std_power) / 1000)
 
 # Cut-off prices (øre/kWh)
 eco_cutoff = 100 * eco_eff / th_per_nok
@@ -103,9 +92,6 @@ std_sup_cutoff = 100 * delta_eff_std_sup / th_per_nok
 # -----------------------------
 st.header("Results")
 
-st.subheader("Revenue baseline")
-st.write(f"**Revenue:** {nok_per_hour_per_th:.8f} NOK / TH / hour")
-
 st.subheader("Mode efficiencies")
 st.table({
     "TH/kWh": {
@@ -114,9 +100,9 @@ st.table({
         "Super": round(sup_eff, 2),
     },
     "J/TH": {
-        "Eco": round(eco_jth, 0),
-        "Standard": round(std_jth, 0),
-        "Super": round(sup_jth, 0),
+        "Eco": round(eco_jth, 1),
+        "Standard": round(std_jth, 2),
+        "Super": round(sup_jth, 2),
     }
 })
 
