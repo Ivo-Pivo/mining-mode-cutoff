@@ -141,11 +141,14 @@ st.caption(
 # -----------------------------
 st.header("Profit simulation")
 
+slider_max = int(round(eco_cutoff * 1.2))
+slider_value = int(round(slider_max * 0.5))
+
 elec_price = st.slider(
     "Electricity price (øre/kWh)", 
     min_value=0, 
-    max_value=200, 
-    value=100,
+    max_value=slider_max, 
+    value=slider_value,
 )
 
 # Convert øre/kWh to NOK/kWh
