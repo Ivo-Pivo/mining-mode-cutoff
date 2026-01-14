@@ -6,8 +6,10 @@ st.title("Bitcoin mining mode cut-off calculator")
 
 st.markdown(
 """
-This app calculates **electricity price cut-off points** (øre/kWh) for switching
-between mining modes, based on marginal profitability. It's developed as a collaborative effort on forum.bitcoinsnakk.no
+This app calculates **electricity price cut-off points** (Norwegian øre/kWh) for switching
+between mining modes, based on marginal profitability. The default values are for a Avalon Q miner, and the network/market default parameters are roughly valid as of 2026-01-14 and not automatically updated.
+
+Developed as a collaborative effort on forum.bitcoinsnakk.no
 """
 )
 
