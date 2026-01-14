@@ -38,6 +38,12 @@ with col3:
 # -----------------------------
 st.header("Network & market parameters")
 
+st.markdown(
+"""
+For calculating profits. Assumes mining in a pool with no fees.
+"""
+)
+
 network_hashrate = st.number_input(
     "Network total hashrate (TH/s)",
     value=1_040_000_000.0,
