@@ -7,7 +7,7 @@ st.title("Bitcoin mining mode cut-off calculator")
 st.markdown(
 """
 This app calculates **electricity price cut-off points** (øre/kWh) for switching
-between mining modes, based on marginal profitability.
+between mining modes, based on marginal profitability. It's developed as a collaborative effort on forum.bitcoinsnakk.no
 """
 )
 
