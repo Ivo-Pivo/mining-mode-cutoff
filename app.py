@@ -48,7 +48,7 @@ For calculating profits. Assumes mining in a pool with no fees.
 
 network_hashrate = st.number_input(
     "Network total hashrate (TH/s)",
-    value=1_040_000_000.0,
+    value=1_020_000_000.0,
     format="%.0f",
 )
 
@@ -59,7 +59,7 @@ block_reward = st.number_input(
 
 btc_price = st.number_input(
     "BTC price (NOK/BTC)",
-    value=933_000.0,
+    value=956_000.0,
     format="%.0f",
 )
 
