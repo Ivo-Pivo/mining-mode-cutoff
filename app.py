@@ -168,6 +168,12 @@ st.metric("Standard profit per hour", f"{std_profit:.2f} NOK")
 st.metric("Super profit per hour", f"{sup_profit:.2f} NOK")
 
 #cut_off_efficiency
-cut_off_efficiency = 3600000 / (elec_price_nok * th_per_nok)
+if elec_price_nok > 0:
+    cut_off_efficiency = 3600000 / (elec_price_nok * th_per_nok)
+    efficiency_label = f"{cut_off_efficiency:.1f} J/TH"
+else:
+    cut_off_efficiency = None
+    efficiency_label = "∞ J/TH"
 
-st.metric("Efficiency breakeven point", f"{cut_off_efficiency:.1f} J/TH")
+st.metric("Efficiency breakeven point", efficiency_label)
+
