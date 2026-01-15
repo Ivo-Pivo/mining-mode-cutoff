@@ -23,18 +23,18 @@ col1, col2, col3 = st.columns(3)
 
 with col1:
     st.subheader("Eco")
-    eco_power = st.number_input("Power (W)", value=830.0)
-    eco_hash = st.number_input("Hashrate (TH/s)", value=53.0)
+    eco_power = st.number_input("Power (W)", value=830, step=1, format="%d")
+    eco_hash = st.number_input("Hashrate (TH/s)", value=53, step=1, format="%d")
 
 with col2:
     st.subheader("Standard")
-    std_power = st.number_input("Power (W) ", value=1381.0)
-    std_hash = st.number_input("Hashrate (TH/s) ", value=82.0)
+    std_power = st.number_input("Power (W)", value=1381, step=1, format="%d")
+    std_hash = st.number_input("Hashrate (TH/s)", value=82, step=1, format="%d")
 
 with col3:
     st.subheader("Super")
-    sup_power = st.number_input("Power (W)", value=1674.0)
-    sup_hash = st.number_input("Hashrate (TH/s)", value=90.0)
+    sup_power = st.number_input("Power (W)", value=1674, step=1, format="%d")
+    sup_hash = st.number_input("Hashrate (TH/s)", value=90, step=1, format="%d")
 
 # -----------------------------
 # Inputs: Network & market
