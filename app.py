@@ -202,6 +202,7 @@ ax.axhline(
     label="Break-even (0 NOK/h)",
 )
 
+# Trim bottom off
 min_profit = eco_profit_curve.min()
 ax.set_ylim(bottom=min(0, min_profit))
 
