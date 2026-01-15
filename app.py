@@ -142,7 +142,7 @@ st.caption(
 # -----------------------------
 st.header("Profit simulation")
 
-slider_max = int(round(eco_cutoff * 1.5))
+slider_max = int(round(eco_cutoff * 1.2))
 slider_value = int(round(slider_max * 0.5))
 
 elec_price = st.slider(
@@ -155,10 +155,53 @@ elec_price = st.slider(
 # Convert øre/kWh to NOK/kWh
 elec_price_nok = elec_price / 100
 
-# Profit per hour = hashing revenue - electricity cost
+# Profit per hour = hashing revenue - electricity cost [NOK/h]
 # Hashing revenue = hashrate (TH/h) / th_per_nok (TH/NOK)
 def profit_per_hour(th_per_nok, power_w, elec_price_nok, hashrate):
         return (hashrate * 3600 / th_per_nok) - (elec_price_nok * power_w * 0.001)
+
+# -----------------------------
+# Profit plot
+# -----------------------------
+
+import numpy as np
+import matplotlib.pyplot as plt
+# Price range for plotting (øre/kWh)
+price_range = np.linspace(0, slider_max, 200)
+price_range_nok = price_range / 100
+
+eco_profit_curve = 100 * profit_per_hour(th_per_nok, eco_power, price_range_nok, eco_hash)
+std_profit_curve = 100 * profit_per_hour(th_per_nok, std_power, price_range_nok, std_hash)
+sup_profit_curve = 100 * profit_per_hour(th_per_nok, sup_power, price_range_nok, sup_hash)
+
+st.subheader("Profit vs electricity price")
+
+fig, ax = plt.subplots(figsize=(8, 5))
+
+ax.plot(price_range, eco_profit_curve, label="Eco", linewidth=2)
+ax.plot(price_range, std_profit_curve, label="Standard", linewidth=2)
+ax.plot(price_range, sup_profit_curve, label="Super", linewidth=2)
+
+# Vertical marker line for current electricity price
+ax.axvline(
+    elec_price,
+    linestyle="--",
+    linewidth=2,
+    color="black",
+    label=f"Selected price ({elec_price:.0f} øre/kWh)",
+)
+
+ax.set_xlabel("Electricity price (øre/kWh)")
+ax.set_ylabel("Profit (øre/hour)")
+ax.legend()
+ax.grid(True, alpha=0.3)
+
+st.pyplot(fig)
+
+# -----------------------------
+#
+# -----------------------------
+
 
 eco_profit = profit_per_hour(th_per_nok, eco_power, elec_price_nok, eco_hash)
 std_profit = profit_per_hour(th_per_nok, std_power, elec_price_nok, std_hash)
