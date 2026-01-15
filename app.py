@@ -182,6 +182,7 @@ ax.plot(price_range, eco_profit_curve, label="Eco", linewidth=2)
 ax.plot(price_range, std_profit_curve, label="Standard", linewidth=2)
 ax.plot(price_range, sup_profit_curve, label="Super", linewidth=2)
 
+
 # Vertical marker line for current electricity price
 ax.axvline(
     elec_price,
@@ -190,6 +191,19 @@ ax.axvline(
     color="black",
     label=f"Selected price ({elec_price:.0f} øre/kWh)",
 )
+
+# Horizontal break-even line
+ax.axhline(
+    0,
+    linestyle="--",
+    linewidth=2,
+    color="red",
+    alpha=0.7,
+    label="Break-even (0 NOK/h)",
+)
+
+min_profit = eco_profit_curve.min()
+ax.set_ylim(bottom=min(0, min_profit))
 
 ax.set_xlabel("Electricity price (øre/kWh)")
 ax.set_ylabel("Profit (øre/hour)")
