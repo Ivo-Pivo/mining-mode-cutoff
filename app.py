@@ -141,7 +141,7 @@ st.caption(
 # -----------------------------
 st.header("Profit simulation")
 
-slider_max = int(round(eco_cutoff * 1.2))
+slider_max = int(round(eco_cutoff * 1.5))
 slider_value = int(round(slider_max * 0.5))
 
 elec_price = st.slider(
@@ -166,3 +166,8 @@ sup_profit = profit_per_hour(th_per_nok, sup_power, elec_price_nok, sup_hash)
 st.metric("Eco profit per hour", f"{eco_profit:.2f} NOK")
 st.metric("Standard profit per hour", f"{std_profit:.2f} NOK")
 st.metric("Super profit per hour", f"{sup_profit:.2f} NOK")
+
+#cut_off_efficiency
+cut_off_efficiency = 3600000 / (elec_price_nok * th_per_nok)
+
+st.metric("Efficiency breakeven point", f"{cut_off_efficiency:.1f} J/TH")
