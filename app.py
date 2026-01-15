@@ -154,13 +154,11 @@ elec_price = st.slider(
 # Convert øre/kWh to NOK/kWh
 elec_price_nok = elec_price / 100
 
-# Profit per hour = (hashrate * 3600 (TH/kWh) / th_per_nok) - (electricity cost per kWh * kWh / h)
+# Profit per hour = hashing revenue - electricity cost
+# Hashing revenue = hashrate (TH/h) / th_per_nok (TH/NOK)
 def profit_per_hour(th_per_nok, power_w, elec_price_nok, hashrate):
-        power_kwh_per_hour = power_w / 1000
         return (hashrate * 3600 / th_per_nok) - (elec_price_nok * power_w * 0.001)
 
-# Or simpler: Revenue per hour per kWh = eff_th_per_kwh / th_per_nok
-# Profit = revenue per hour - electricity cost per hour
 eco_profit = profit_per_hour(th_per_nok, eco_power, elec_price_nok, eco_hash)
 std_profit = profit_per_hour(th_per_nok, std_power, elec_price_nok, std_hash)
 sup_profit = profit_per_hour(th_per_nok, sup_power, elec_price_nok, sup_hash)
