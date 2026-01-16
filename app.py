@@ -23,17 +23,17 @@ col1, col2, col3 = st.columns(3)
 
 with col1:
     st.subheader("Eco")
-    eco_power = st.number_input("Power (W)", value=830, step=1, format="%d")
+    eco_power = st.number_input("Power (W)", value=830, step=5, format="%d")
     eco_hash = st.number_input("Hashrate (TH/s)", value=53, step=1, format="%d")
 
 with col2:
     st.subheader("Standard")
-    std_power = st.number_input("Power (W)", value=1381, step=1, format="%d")
+    std_power = st.number_input("Power (W)", value=1380, step=5, format="%d")
     std_hash = st.number_input("Hashrate (TH/s)", value=82, step=1, format="%d")
 
 with col3:
     st.subheader("Super")
-    sup_power = st.number_input("Power (W)", value=1674, step=1, format="%d")
+    sup_power = st.number_input("Power (W)", value=1675, step=5, format="%d")
     sup_hash = st.number_input("Hashrate (TH/s)", value=90, step=1, format="%d")
 
 # -----------------------------
@@ -82,19 +82,17 @@ eco_eff = th_per_kwh(eco_hash, eco_power)
 std_eff = th_per_kwh(std_hash, std_power)
 sup_eff = th_per_kwh(sup_hash, sup_power)
 
-# Incremental efficiencies
-delta_eff_eco_std = th_per_kwh((std_hash - eco_hash), (std_power - eco_power))
-delta_eff_std_sup = th_per_kwh((sup_hash - std_hash), (sup_power - std_power))
-
 eco_jth = j_per_th(eco_hash, eco_power)
 std_jth = j_per_th(std_hash, std_power)
 sup_jth = j_per_th(sup_hash, sup_power)
 
+# Incremental efficiencies
+delta_eff_eco_std = th_per_kwh((std_hash - eco_hash), (std_power - eco_power))
+delta_eff_std_sup = th_per_kwh((sup_hash - std_hash), (sup_power - std_power))
+
 # Cut-off prices (øre/kWh)
 eco_cutoff = 100 * eco_eff / th_per_nok
-#eco_std_cutoff = 100 * nok_per_hour_per_th * delta_eff_eco_std
 eco_std_cutoff = 100 * delta_eff_eco_std / th_per_nok
-#std_sup_cutoff = 100 * nok_per_hour_per_th * delta_eff_std_sup
 std_sup_cutoff = 100 * delta_eff_std_sup / th_per_nok
 
 # -----------------------------
@@ -156,7 +154,7 @@ elec_price = st.slider(
 elec_price_nok = elec_price / 100
 
 # Profit per hour = hashing revenue - electricity cost [NOK/h]
-# Hashing revenue = hashrate (TH/h) / th_per_nok (TH/NOK)
+# Hashing revenue = hashrate (TH/h) / th_per_nok [NOK/h]
 def profit_per_hour(th_per_nok, power_w, elec_price_nok, hashrate):
         return (hashrate * 3600 / th_per_nok) - (elec_price_nok * power_w * 0.001)
 
