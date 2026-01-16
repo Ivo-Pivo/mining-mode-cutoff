@@ -212,7 +212,7 @@ ax.grid(True, alpha=0.3)
 st.pyplot(fig)
 
 # -----------------------------
-#
+# Mode profit per hour
 # -----------------------------
 
 
@@ -220,9 +220,13 @@ eco_profit = profit_per_hour(th_per_nok, eco_power, elec_price_nok, eco_hash)
 std_profit = profit_per_hour(th_per_nok, std_power, elec_price_nok, std_hash)
 sup_profit = profit_per_hour(th_per_nok, sup_power, elec_price_nok, sup_hash)
 
-st.metric("Eco profit per hour", f"{eco_profit:.2f} NOK")
-st.metric("Standard profit per hour", f"{std_profit:.2f} NOK")
-st.metric("Super profit per hour", f"{sup_profit:.2f} NOK")
+eco_year_profit = eco_profit * 24 * 365
+std_year_profit = std_profit * 24 * 365
+sup_year_profit = sup_profit * 24 * 365
+
+st.metric("Eco profit", f"{eco_profit:.2f} NOK/h, {eco_year_profit:.0f} NOK/year")
+st.metric("Standard profit", f"{std_profit:.2f} NOK/h, {std_year_profit:.0f} NOK/year")
+st.metric("Super profit", f"{sup_profit:.2f} NOK/h, {sup_year_profit:.0f} NOK/year")
 
 #cut_off_efficiency
 if elec_price_nok > 0:
@@ -234,3 +238,22 @@ else:
 
 st.metric("Efficiency breakeven point", efficiency_label)
 
+# -----------------------------
+# Payback time, free electricity
+# -----------------------------
+
+st.subheader("Payback time - Free electricity")
+
+purchase_price = st.number_input("Purchase price (NOK)", value=19100, step=100, format="%d")
+
+eco_rev = profit_per_hour(th_per_nok, eco_power, 0, eco_hash)
+std_rev = profit_per_hour(th_per_nok, std_power, 0, std_hash)
+sup_rev = profit_per_hour(th_per_nok, sup_power, 0, sup_hash)
+
+eco_PB = purchase_price / (eco_rev * 24 * 365)
+std_PB = purchase_price / (std_rev * 24 * 365)
+sup_PB = purchase_price / (sup_rev * 24 * 365)
+
+st.metric("Eco payback time", f"{eco_PB:.2f} years")
+st.metric("Standard payback time", f"{std_PB:.2f} years")
+st.metric("Super payback time", f"{sup_PB:.2f} years")
