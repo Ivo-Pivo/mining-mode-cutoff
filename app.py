@@ -242,7 +242,7 @@ st.metric("Efficiency breakeven point", efficiency_label)
 # Payback time, free electricity
 # -----------------------------
 
-st.subheader("Payback time - Free electricity")
+st.subheader("Payback time, assuming free electricity")
 
 purchase_price = st.number_input("Purchase price (NOK)", value=19100, step=100, format="%d")
 
